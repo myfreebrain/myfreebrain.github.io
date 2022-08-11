@@ -1,0 +1,1322 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <style>
+          canvas {
+              border: 0px solid black;
+              font-family: "Helvetica Neue", "Arial", "Lucida Grande", "Lucida Sans Unicode", "Microsoft YaHei", sans-serif;
+              font-size: 13px;
+              line-height: 1.5;
+              color: #474747;
+          }
+          td {text-align: center;}
+          td.fig {width: 710px;text-align: right;}
+          textarea {width: 4em; height: 1em; resize: none;}
+      </style>
+
+
+    <script type="text/javascript">
+
+var canvW=700;
+var canvH=500;
+var edge = 30;
+var xmin = 30;
+var xmax = canvW-xmin;
+var ymin = 30;
+var ymax = canvH-ymin/2;
+var midValX = (xmin+xmax)/2;
+var midValY = (ymin+ymax)/2;
+var Qx = 0;
+var Qy = 0;
+var Qarray = new Array();
+var noOfQ = -1;
+var QxA = new Array();
+var QyA = new Array();
+var QcolA = new Array();
+var newQflag = false;//adding new charge to display
+var oldQflag = false;//trying to move an old charge
+var oldQchosen = -1;
+var moveruler = false;//true;
+var moveF = true;
+var moveRay = false;
+var arrXA = new Array();//hold x pos of arrow centre
+var arrYA = new Array();
+var noOfArr = 0;
+var arrFXA = new Array();//hold x comp of force at arrow position
+var arrFYA = new Array();
+var arrAngle = new Array();//hold angle of arrow
+var arrLength = 10;//half length of arrow
+var arrNewLength = new Array();
+var rulerLX = 50;
+var rulerLY = canvH/3;
+var rulerRX = canvW;
+var rulerRY = rulerLY;
+var rulerMX = canvW/2;//canvH-30 + 30 /2
+var rulerMY = rulerLY;
+var rulerTX = rulerLX;//position of ruler Text
+var rulerTY = rulerLY-15;
+var touchRadius = 20;
+var touchFlag = "no";
+var minX = 30;
+var minY = 30;
+var maxX = canvW-30;
+var maxY = canvH-30;
+var changeX = false;//moving ruler along top or bottom if TRUE
+var rulerAngle = 0;
+var rulerDX = canvW-60;
+var rulerDY = 0;
+var rulerGrad = 0;
+var rulerC = rulerLY;
+var rayLX = 140;
+var rayLY = minY;
+var rayRX = 140;
+var rayRY = canvH-120;
+var rayMX = 140;//canvH-30 + 30 /2
+var rayMY = minY;
+var rayTX = rayLX+25;//position of ruler Text
+var rayTY = rayLY+25;
+var touchRadiusRay = 20;
+var touchFlagRay = "no";
+var changeXRay = false;//moving ruler along top or bottom if TRUE
+var rayAngle = Math.PI;
+var rayDX = 0;
+var rayDY = 0;
+var rayGrad = 0;
+var rayC = 0;
+var normLX = 0;
+var normLY = 0;
+var normRX = 0;
+var normRY = 0;
+var normMX = 0;//
+var normMY = 0;
+var normTX = normLX+25;//position of N Text
+var normTY = normLY+25;
+var touchRadiusNorm = 20;
+var touchFlagNorm = "no";
+var changeXNorm = false;//moving ruler along top or bottom if TRUE
+var normAngle = Math.PI;
+var normDX = 0;
+var normDY = 0;
+var normGrad = 0;
+var normC = 0;
+var normL = 50;//half-length of normal;
+var reflLX = 0;
+var reflLY = 0;
+var reflRX = 0;
+var reflRY = 0;
+var reflMX = 0;//
+var reflMY = 0;
+var reflTX = reflLX+25;//position of ruler Text
+var reflTY = reflLY+25;
+var touchRadiusRefl = 20;
+var touchFlagRefl = "no";
+var changeXRefl = false;//moving ruler along top or bottom if TRUE
+var reflAngle = Math.PI;
+var reflDX = 0;
+var reflDY = 0;
+var reflGrad = 0;
+var reflC = 0;
+var reflL = canvW;//max length of reflected ray;
+var meetAngle = 0;
+var incAngle = 0;
+var reflAngle = 0;
+var refrAngle = 0;
+var angle2 = new Array();
+var angle3 = new Array();
+var sin2 = new Array();
+var sin3 = new Array();
+var cos2 = new Array();
+var cos3 = new Array();
+var headL = 10;//length of arrow heads
+var textFlag = true;
+var micR= 20;
+var mic1X=rulerRX-150;
+var mic1Y= rulerLY-5 - micR;
+var mic2X= rulerRX-300;
+var mic2Y= rulerLY+30+micR;
+var bangRX = mic2X+micR;
+var bangRefRX = canvW-mic2X-micR;
+var bangRY = rulerRY -30;
+var boxX = canvW/4;
+var boxY = canvH/4*3;
+var boxW = canvW/4;
+var boxH = canvH/6;
+var boxT = "000000";
+var boxTXoffset = boxW/4 ;//box text - time info
+var boxTYoffset = boxH/4*3;
+var boxBY = boxH/5;//y value of buttons
+var boxB1 = boxW/3*2;//x value of on button - on right
+var boxB2 = boxW/3;//off button - on left
+var bangFlag = false;
+var bangRing = 0;
+var bangGo = "";
+var scalarCount = 0;
+var scalarScale = 1.5;
+var scalarText = "";
+var startScalar = false;
+var boxShow = 0;
+var finalSp = 0;
+var posMic1 = 0
+var posMic1s = "";
+var posMic2 = 0;
+var posMic2s = "";
+var distMic = 0;
+var distMics = "";
+var speedS = 0;
+var speedSs = "";
+var mirrorX = rulerRX+4;
+var mirrorLY = maxY-50;
+var mirrorRY = minY+5;
+
+window.onload = function(){
+    var events = new Events("myCanvas");
+    var canvas = events.getCanvas();
+    var context = events.getContext();
+    var isMouseDown = false;
+    var canvasImg = getCanvasImg(canvas);
+    var points = [];
+
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.canvas.width = canvW;
+    ctx.canvas.height = canvH;
+
+
+    ctx.lineWidth = "4";
+    ctx.strokeStyle = "red";
+    ctx.beginPath();
+    ctx.arc(bangRX, bangRY, 2, 0, 2*Math.PI);
+    ctx.stroke();
+//draw mirror
+    ctx.beginPath();
+    ctx.moveTo(mirrorX, mirrorLY);
+    ctx.lineTo(mirrorX, mirrorRY);
+    ctx.stroke();
+
+    // Green rectangle
+    ctx.beginPath();
+    ctx.lineWidth = "1";
+    ctx.strokeStyle = "black";
+    ctx.rect(0, 0, canvW, canvH);//ctx.rect(30, 30, canvW-60, canvH-60);
+    ctx.stroke();
+      ctx.beginPath();
+      ctx.lineWidth = "2";
+      ctx.strokeStyle = "black";
+      //ctx.rect(200, 200, 100, 100);
+      ctx.rect(boxX, boxY, boxW, boxH);
+      ctx.stroke;
+
+          ctx.lineWidth = "1";
+          ctx.strokeStyle = "black";
+          for(e=rulerRX; e>rulerLX-1;e=e-10){
+          ctx.moveTo(e, rulerRY);
+          ctx.lineTo(e, rulerRY+6);
+          ctx.stroke();}
+          for(e=rulerRX; e>rulerLX-1;e=e-100){
+          ctx.moveTo(e, rulerRY);
+          ctx.lineTo(e, rulerRY+10);
+          ctx.stroke();}
+          //bottom ridge
+          ridgeCount = 0;
+          for(e=rulerRX; e>rulerLX-1;e=e-100){
+          ctx.fillText("+"+ridgeCount,e-3, rulerRY+25);
+          ridgeCount++;}
+
+    ctx.beginPath();
+    ctx.lineWidth = "1";
+    ctx.strokeStyle = "black";
+    ctx.moveTo(rulerLX, rulerLY);
+    ctx.lineTo(rulerRX, rulerRY);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.font = "20px Arial";
+    ctx.fillText("ruler",rulerTX, rulerTY);
+    ctx.fillStyle = "black";
+
+  //draw scalar
+    ctx.beginPath();
+    ctx.lineWidth = "2";
+    ctx.strokeStyle = "black";
+    ctx.rect(200, 200, 100, 100);
+    //ctx.rect(boxX, boxY, boxW, boxH);
+    ctx.stroke;
+    ctx.beginPath();
+    //input buttons
+    ctx.lineWidth = "1";
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ctx.arc(boxX+boxB1, boxY+boxBY, 3, 0, 2*Math.PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(boxX+boxB2, boxY+boxBY, 3, 0, 2*Math.PI);
+    ctx.stroke();
+  //numbers on scalar
+    ctx.beginPath();
+    ctx.font = "28px Arial";
+    ctx.fillText(""+boxT,boxX+boxTXoffset, boxY+boxTYoffset);
+    ctx.beginPath();
+      ctx.beginPath();
+      ctx.font = "20px Arial";
+      ctx.fillText("scaler-timer (\u03BCs)",boxX+boxW/8, boxY+boxH+25);
+      ctx.beginPath();
+    ctx.font = "10px Arial";
+    ctx.fillText("on",boxX+boxB1-5, boxY+boxBY+12);
+    ctx.beginPath();
+    ctx.font = "10px Arial";
+    ctx.fillText("off",boxX+boxB2-5, boxY+boxBY+12);
+
+//draw 2 mics
+      /*  ctx.beginPath();
+        ctx.lineWidth = "6";
+        ctx.strokeStyle = "black";
+        ctx.moveTo(mic1X+micR, mic1Y+micR);
+        ctx.lineTo(mic1X+micR, mic1Y-micR);
+        ctx.stroke();*/
+
+        ctx.beginPath();
+        ctx.lineWidth = "6";
+        ctx.strokeStyle = "black";
+        ctx.moveTo(mic2X+micR, mic2Y+micR);
+        ctx.lineTo(mic2X+micR, mic2Y-micR);
+        ctx.stroke();
+
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.arc(mic2X, mic2Y, micR, 0, 2*Math.PI);
+        ctx.stroke();
+      /*  ctx.beginPath();
+        ctx.arc(mic1X, mic1Y, micR, 0, 2*Math.PI);
+        ctx.stroke();
+        ctx.beginPath();*/
+
+        //ctx.lineWidth = "4";
+      //  ctx.strokeStyle = "red";
+        //ctx.beginPath();
+        //ctx.arc(rulerRX+75, rulerRY, 2, 0, 2*Math.PI);
+        //ctx.stroke();
+
+//plug in mics
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "black";
+      /*  ctx.moveTo(mic1X-micR, mic1Y);
+        ctx.lineTo(boxX+boxB1, boxY+boxBY);
+        ctx.stroke();*/
+        ctx.moveTo(mic2X-micR, mic2Y);
+        ctx.lineTo(boxX+boxB2, boxY+boxBY);
+        ctx.stroke();
+
+
+    /*    posMic1 = Math.abs((mic1X+micR-rulerRX)/100);
+        posMic1s = posMic1.toFixed(2)+" m";
+        posMic2 = Math.abs((mic2X+micR-rulerRX)/100);
+        posMic2s = posMic2.toFixed(2)+" m";
+        distMic = posMic2-posMic1;
+        distMics = distMic.toFixed(2)+" m";
+        speedS = distMic/finalSp*1000000;
+        speedSs = speedS.toFixed(0)+" m/s";
+*/
+
+        //document.getElementById("dummy1").innerHTML="distance<br>between microphones<br>="+distMics;
+        //document.getElementById("dummy1").innerHTML="position of<br>microphone 1<br>="+posMic1s;
+        //document.getElementById("dummy2").innerHTML="speed<br>of sound<br>="+speedSs;
+        //document.getElementById("dummy3").innerHTML="position of<br>microphone 2<br>="+posMic2s;
+
+    document.getElementById("saveButton").addEventListener("click", function(evt){
+        // open new window with saved image so user
+        // can right click and save to their computer
+        window.open(canvas.toDataURL());
+    }, false);
+
+    canvas.addEventListener("mousedown", function(){
+        var drawingPos = events.getMousePos();
+        //newQflag = false;
+
+      if(moveruler){
+        moveQ(events, points);//***
+      }
+      if(moveRay){
+        //moveArr(events, points);//***
+      }
+        isMouseDown = true;
+    }, false);
+
+   canvas.addEventListener("mouseup", function(){
+        var drawingPos = events.getMousePos();
+        isMouseDown = false;
+        touchFlag = "no";
+
+       if (drawingPos !== null) {
+              //points.push(drawingPos);
+              Qx = drawingPos.x;
+              Qy = drawingPos.y;
+            }
+
+        moveF=true;
+        canvasImg = getCanvasImg(this);
+    }, false);
+
+    canvas.addEventListener("mouseout", function(){
+        if (document.createEvent) {
+            var evt = document.createEvent('MouseEvents');
+            evt.initEvent("mouseup", true, false);
+            this.dispatchEvent(evt);
+        }
+        else {
+            this.fireEvent("onmouseup");
+        }
+    }, false);
+
+    events.setStage(function(){
+        if (isMouseDown) {
+            if(true){
+              moveQ(events, points);
+            }
+        }
+    });
+    plotNewMoveQ();
+}
+
+function getCanvasImg(canvas){
+    var img = new Image();
+    img.src = canvas.toDataURL();
+    return img;
+}
+
+function moveQ(events, points){
+                          var context = events.getContext();
+                          var drawingPos = events.getMousePos();
+
+                          if (drawingPos !== null) {
+                              Qx = drawingPos.x;
+                              Qy = drawingPos.y;
+                              //alert("touching");
+                        //check if touching mic1
+                        if(true){
+                      /*  if(Qy<mic1Y+micR && Qy>mic1Y-micR && Qx<mic1X+micR && Qx>mic1X-micR){//check if 'circle of mic'
+                          //changeX = false;
+                          mic1X = Qx;
+                          if(Qx>=rulerRX-micR){
+                            mic1X  = rulerRX-micR;
+                            //changeX = true;
+                          }
+                          else if(Qx<=rulerLX-micR){
+                            mic1X = rulerLX-micR;
+                            //changeX = true;
+                          }
+                          if(Qx<mic2X){
+                            mic1X = mic2X;
+                            //changeX = false;
+                          }
+                          //touchFlag = "right";
+                          boxT = "000000"
+                          plotActualPict();
+                          //else{newQflag==false}
+                        }*/
+                        //check if touching mic2
+                        if(Qy<mic2Y+micR && Qy>mic2Y-micR && Qx<mic2X+micR && Qx>mic2X-micR){//check if touching right edge
+                        mic2X = Qx;
+                        if(Qx>=rulerRX-micR){
+                          mic2X  = rulerRX-micR;
+                          //changeX = true;
+                        }
+                        else if(Qx<=rulerLX-micR){
+                          mic2X = rulerLX-micR;
+                          //changeX = true;
+                        }
+                        //if(Qx>mic1X){
+                        //  mic2X = mic1X;
+                          //changeX = false;
+                        //}
+                        bangRX = mic2X+micR;
+                        bangRefRX = canvW - bangRX;
+                          //touchFlag = "left";
+                          boxT = "000000"
+                          plotActualPict();
+                          //else{newQflag==false}
+                        }
+                }
+                }
+              }
+
+  function moveArr(events, points){
+        var context = events.getContext();
+        var drawingPos = events.getMousePos();
+
+          if (drawingPos !== null) {
+              Qx = drawingPos.x;
+              Qy = drawingPos.y;
+
+              noOfArr++;
+              findFieldXY(Qx, Qy, noOfArr);
+              plotNewArrow();
+
+              }
+      }
+
+function plotNewMoveQ(){
+
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      ctx.clearRect(0, 0, canvW, canvH);//ctx.clearRect(30, 30, canvW-60, canvH-60);//
+
+      // Green rectangle
+      ctx.beginPath();
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "green";
+      ctx.rect(30, 30, canvW-60, canvH-60);
+      ctx.stroke();
+/*
+if(touchFlagRay=="top"){
+              if(changeXRay){
+                rayLY = Qy;
+                if(Qy>maxY){rayLY = maxY;}
+                else if(Qy<minY){rayLY = minY;}
+              }
+              else{
+                rayLX = Qx;
+                rayLY = minY;
+              }
+            //if(Qy<maxY-2&&Qy>minY+2){rulerRX = maxX;}
+        }
+
+if(touchFlag=="right"){
+        if(changeX){
+          rulerRX = Qx;
+          if(Qx>maxX){rulerRX = maxX;}
+          else if(Qx<minX){rulerRX = minX;}
+        }
+        else{
+          rulerRY = Qy;
+          rulerRX = maxX;
+        }
+      if(Qy<maxY-2&&Qy>minY+2){rulerRX = maxX;}
+  }
+  else if(touchFlag=="left"){
+          if(changeX){
+            rulerLX = Qx;
+            if(Qx>maxX){rulerLX = maxX;}
+            else if(Qx<minX){rulerLX = minX;}
+          }
+          else{
+            rulerLY = Qy;
+            rulerLX = minX;
+          //plotActualPict();
+        }
+      if(Qy<maxY-2&&Qy>minY+2){rulerLX = minX;}
+
+    }
+    else if(touchFlag=="centre"){
+            if(changeX){
+              var dispY = rulerMY+rulerDY/2-maxY;
+              rulerLX = dispY/(Math.tan(rulerAngle));
+              if(rulerLX<minX){rulerLX=minX;}
+                dispY = minY-rulerMY-rulerDY/2;
+                rulerRX = dispY/tan(rulerAngle);
+                if(rulerRX<maxX){rulerRX=maxX;}
+              if(Qx>maxX){rulerLX = maxX;}
+              else if(Qx<minX){rulerLX = minX;}
+            }
+            else{
+              rulerLY = Qy;
+              rulerLX = minX;
+              rulerRX = maxX;
+            //plotActualPict();
+          }
+        if(Qy<maxY-2&&Qy>minY+2){rulerLX = minX;}
+    }
+else{
+//plotActualPict();
+  }
+  if(rulerRX<rulerLX){var dummyX=rulerRX;
+    var dummyY = rulerRY;
+    rulerRX=rulerLX;
+    rulerRY=rulerLY;
+    rulerLX=dummyX;
+    rulerLY=dummyY;
+  }
+  if((rulerRX-rulerLX)!=0){
+  rulerAngle = Math.atan((rulerRY-rulerLY)/(rulerRX-rulerLX));
+  if(rulerAngle<0){rulerAngle=Math.PI+rulerAngle;}
+  }
+  else{
+    rulerAngle = Math.PI/2;
+  }
+  //if(rayLY<rayRY){
+  if((rayRX-rayLX)!=0){
+  rayAngle = Math.atan((rayRY-rayLY)/(rayRX-rayLX));
+  if(rayLY>rayRY){rayAngle = Math.PI+rayAngle;}
+  if(rayAngle<0){rayAngle=Math.PI+rayAngle;}
+  }
+  else{
+    rayAngle = Math.PI/2;
+  }
+  */
+/*}
+  else{//rayLY>rayRY - In ray below horizontal
+  //if((rayRX-rayLX)!=0)
+if(true){
+  rayAngle = Math.atan((rayLY-rayRY)/(rayRX-rayLX));
+
+  if(rayAngle<0){rayAngle=Math.PI+rayAngle;}
+  }
+  else{
+    rayAngle = Math.PI/2;
+  }
+
+}*/
+
+
+  angle2[0] = rayAngle+3*Math.PI/4;
+  if(angle2[0]>Math.PI){angle2[0]=angle2[0]-(2*Math.PI);}
+  angle3[0] = rayAngle-3*Math.PI/4
+  if(angle3[0]<-Math.PI){angle3[0]=angle3[0]+(2*Math.PI);}
+  sin2[0] = headL*Math.sin(angle2[0]);
+  sin3[0] = headL*Math.sin(angle3[0]);
+  cos2[0] = headL*Math.cos(angle2[0]);
+  cos3[0] = headL*Math.cos(angle3[0]);
+
+
+  meetAngle = rayAngle-rulerAngle;
+  incAngle = meetAngle - Math.PI/2;//Math.abs(Math.PI/2 - meetAngle);
+
+  reflAngle = rulerAngle - (Math.PI - meetAngle) - 2*incAngle;
+  /*if(rulerAngle<0){
+  reflAngle = - Math.PI + rulerAngle + meetAngle - 2*incAngle;}
+  else{
+  reflAngle = - Math.PI + rulerAngle + meetAngle + 2*incAngle;}*/
+
+  //reflAngle =  - rulerAngle - meetAngle - 2*incAngle;//half works
+  //reflAngle = - Math.PI - incAngle;//Math.PI
+  //reflAngle = Math.PI + rulerAngle + incAngle;
+
+  rulerGrad = -((rulerLY-rulerRY)/(rulerRX-rulerLX));
+  rulerC = rulerRY-rulerGrad*rulerRX;
+  if(rayAngle!=Math.PI/2&&true){
+  rayGrad = - Math.tan(-rayAngle);
+  rayC = rayLY - rayGrad*rayLX;
+  if(rayGrad!=rulerGrad){
+  rayRX = (rulerC-rayC)/(rayGrad-rulerGrad);
+  rayRY = rayGrad*rayRX+rayC;}
+  }
+  else{
+    /*var delX = (rayLX-rulerLX);
+  var delY = rulerGrad*delX;
+  rayRY = rulerLY + delY;*/}
+
+  rayMX = (rayLX+rayRX)/2;
+  rayMY = (rayLY+rayRY)/2;
+
+  /*if(touchFlag=="left"||touchFlag=="right"||touchFlag=="centre")
+  {var delX = (rayLX-rulerLX);
+  var delY = rulerGrad*delX;
+  rayRY = rulerLY + delY;}*/
+
+  var angCos = Math.cos(rulerAngle);
+  var angSin = Math.sin(rulerAngle);
+
+  //rayRY = rulerGrad*(rayRX - rulerLX);
+
+  normLX = rayRX - angSin*normL;//rayRX = normMX
+  normRX = rayRX + angSin*normL;
+  normLY = rayRY + angCos*normL;
+  normRY = rayRY - angCos*normL;
+  normTX = normMX - Math.abs(angSin*normL/2)-5;
+  normTY = normMY + Math.abs(angCos*normL/2)+5;
+  reflLX = rayRX;
+  reflLY = rayRY;
+  //code R1***
+  if(reflAngle!=Math.PI/2&&true){
+  reflGrad = - Math.tan(-reflAngle);
+  reflC = reflLY - reflGrad*reflLX;
+  }
+  //end code R1****
+  //code R2****
+  reflRX = reflLX+reflL*Math.cos(reflAngle);// code R 2 can work on its own without code R1
+  reflRY = reflLY+reflL*Math.sin(reflAngle);
+  //end code R2***
+  //code R1b
+  if(reflRY<minY){
+    reflRY=minY;
+    reflRX = (reflRY-reflC)/reflGrad;
+  }
+  else if(reflRY>maxY){
+    reflRY=maxY;
+    reflRX = (reflRY-reflC)/reflGrad;
+  }
+  else{}
+  if(reflRX<minX){
+    reflRX=minX;
+    reflRY = reflGrad*reflRX+reflC;
+  }
+  else if(reflRX>maxX){
+    reflRX=maxX;
+    reflRY = reflGrad*reflRX+reflC;
+  }
+  else{}
+
+
+  //if(reflRX>canvW-60){reflRX=canvW-60;}
+  //if(reflRX<30){reflRX=30;}
+  //if(reflRY>canvH-30){reflRY=canvH-30;}
+  //if(reflRY<30){reflRY=30;}
+  rayTX = (rayLX+rayRX)/2-25;//position of ray Text
+  rayTY = (rayLY+rayRY)/2-25;
+  reflTX = (reflLX+reflRX)/2-25;//position of refl Text
+  reflTY = (reflLY+reflRY)/2-25;
+
+    angle2[1] = reflAngle+3*Math.PI/4;
+    if(angle2[1]>Math.PI){angle2[1]=angle2[1]-(2*Math.PI);}
+    angle3[1] = reflAngle-3*Math.PI/4
+    if(angle3[1]<-Math.PI){angle3[1]=angle3[1]+(2*Math.PI);}
+    sin2[1] = headL*Math.sin(angle2[1]);
+    sin3[1] = headL*Math.sin(angle3[1]);
+    cos2[1] = headL*Math.cos(angle2[1]);
+    cos3[1] = headL*Math.cos(angle3[1]);
+
+      reflMX = (reflLX+reflRX)/2;
+      reflMY = (reflLY+reflRY)/2;
+
+plotActualPict();
+}
+
+function plotActualPict(){
+
+
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+
+        ctx.clearRect(0, 0, canvW, canvH);//ctx.clearRect(30, 30, canvW-60, canvH-60);//
+
+
+        ctx.lineWidth = "4";
+        ctx.strokeStyle = "red";
+        ctx.beginPath();
+        ctx.arc(bangRX, bangRY, 2, 0, 2*Math.PI);
+        ctx.stroke();
+
+        //draw mirror
+        ctx.lineWidth = "8";
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.moveTo(canvW, minY-30);
+        ctx.lineTo(canvW, maxY+30);
+        ctx.stroke();
+
+if(bangFlag){
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = "red";
+        //ctx.beginPath();
+        bangRing=bangRing+5;
+        ctx.beginPath();
+          ctx.arc(bangRX, bangRY, bangRing, 0, 2*Math.PI);
+          ctx.stroke();
+        //else if(bangRing>rulerLX-mic2X-micR){//reflect
+            //ctx.arc(bangRX, bangRY, bangRing, 0, 2*Math.PI);
+            //ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(canvW+bangRefRX, bangRY, bangRing, 0, 2*Math.PI);//maxX+(rulerRX-bangRX+micR+8)
+            ctx.stroke();
+          //}
+          var toFar = 2*bangRefRX+4*micR;//rulerRX+75-mic2X+2*micR;
+          if(bangRing>toFar){//bangRing>1500
+              clearTimeout(bangGo);
+              endBang();
+          }
+      }
+        ctx.beginPath();
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "white";
+        ctx.rect(0, 0, canvW, canvH);//ctx.rect(30, 30, canvW-60, canvH-60);
+        ctx.stroke();
+          ctx.beginPath();
+          ctx.lineWidth = "2";
+          ctx.strokeStyle = "black";
+          //ctx.rect(200, 200, 100, 100);
+          ctx.rect(boxX, boxY, boxW, boxH);
+          ctx.stroke;
+
+              ctx.lineWidth = "1";
+              ctx.strokeStyle = "black";
+              for(e=rulerRX; e>rulerLX-1;e=e-10){
+              ctx.moveTo(e, rulerRY);
+              ctx.lineTo(e, rulerRY+6);
+              ctx.stroke();}
+              for(e=rulerRX; e>rulerLX-1;e=e-100){
+              ctx.moveTo(e, rulerRY);
+              ctx.lineTo(e, rulerRY+10);
+              ctx.stroke();}
+              //bottom ridge
+              ridgeCount = 0;
+              for(e=rulerRX; e>rulerLX-1;e=e-100){
+              ctx.fillText(""+ridgeCount,e-5, rulerRY+25);
+              ridgeCount++;}
+
+        ctx.beginPath();
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "black";
+        ctx.moveTo(rulerLX, rulerLY);
+        ctx.lineTo(rulerRX, rulerRY);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.font = "20px Arial";
+        ctx.fillText("ruler (m)",rulerTX, rulerTY);
+        ctx.fillStyle = "black";
+
+        //draw scalar
+        ctx.beginPath();
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = "black";
+        ctx.rect(200, 200, 100, 100);
+        //ctx.rect(boxX, boxY, boxW, boxH);
+        ctx.stroke;
+        ctx.beginPath();
+        //input buttons
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.arc(boxX+boxB1, boxY+boxBY, 3, 0, 2*Math.PI);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(boxX+boxB2, boxY+boxBY, 3, 0, 2*Math.PI);
+        ctx.stroke();
+        //numbers on scalar
+        ctx.beginPath();
+        ctx.font = "28px Arial";
+        ctx.fillText(""+boxT,boxX+boxTXoffset, boxY+boxTYoffset);
+        ctx.beginPath();
+          ctx.beginPath();
+          ctx.font = "20px Arial";
+          ctx.fillText("scaler-timer (\u03BCs)",boxX+boxW/8, boxY+boxH+25);
+          ctx.beginPath();
+        ctx.font = "10px Arial";
+        ctx.fillText("on",boxX+boxB1-5, boxY+boxBY+12);
+        ctx.beginPath();
+        ctx.font = "10px Arial";
+        ctx.fillText("off",boxX+boxB2-5, boxY+boxBY+12);
+
+        //draw 2 mics
+          /*  ctx.beginPath();
+            ctx.lineWidth = "6";
+            ctx.strokeStyle = "black";
+            ctx.moveTo(mic1X+micR, mic1Y+micR);
+            ctx.lineTo(mic1X+micR, mic1Y-micR);
+            ctx.stroke();*/
+
+            ctx.beginPath();
+            ctx.lineWidth = "6";
+            ctx.strokeStyle = "black";
+            ctx.moveTo(mic2X+micR, mic2Y+micR);
+            ctx.lineTo(mic2X+micR, mic2Y-micR);
+            ctx.stroke();
+
+            ctx.lineWidth = "1";
+            ctx.beginPath();
+            ctx.arc(mic2X, mic2Y, micR, 0, 2*Math.PI);
+            ctx.stroke();
+        /*    ctx.beginPath();
+            ctx.arc(mic1X, mic1Y, micR, 0, 2*Math.PI);
+            ctx.stroke();
+            ctx.beginPath();*/
+
+        //plug in mics
+            ctx.lineWidth = "1";
+            ctx.strokeStyle = "black";
+          /*  ctx.moveTo(mic1X-micR, mic1Y);
+            ctx.lineTo(boxX+boxB1, boxY+boxBY);
+            ctx.stroke();*/
+            ctx.moveTo(mic2X-micR, mic2Y);
+            ctx.lineTo(boxX+boxB2, boxY+boxBY);
+            ctx.stroke();
+
+            if(!startScalar){
+              scalarCount=0;}//make sure its  zero before start counting
+//alert(""+bangRefRX+" "+bangRing+" "+(mic2X+micR));
+            if(bangFlag&&canvW+bangRefRX-bangRing>mic2X+micR){
+              startScalar = true;
+              scalarCount = scalarCount + 100;
+              scalarCount = scalarCount+Math.floor(Math.random()*8)-Math.floor(Math.random()*9);
+              boxShow = scalarCount*scalarScale;
+              scalarText = boxShow.toFixed(0);
+              scTlen=scalarText.length;
+              if(scTlen==1){
+                boxT = "00000"+scalarText+"";
+              }
+              else if(scTlen==2){
+                boxT = "0000"+scalarText+"";
+              }
+              else if(scTlen==3){
+                boxT = "000"+scalarText+"";
+              }
+              else if(scTlen==4){
+                boxT = "00"+scalarText+"";
+              }
+              else if(scTlen==5){
+                boxT = "0"+scalarText+"";
+              }
+              else{boxT = ""+scalarText+"";}
+
+              //finalSp = scalarCount*scalarScale;
+            }
+            else{
+              startScalar=false;
+              finalSp = parseInt(scalarText);
+            }
+            if(startScalar){
+
+            }
+
+      //posMic1 = Math.abs((mic1X+micR-rulerRX)/100);
+      //posMic1s = posMic1.toFixed(2)+" m";
+      posMic2 = Math.abs((mic2X+micR-rulerRX)/100);
+      posMic2s = posMic2.toFixed(2)+" m";
+      //distMic = posMic2-posMic1;
+      //distMics = distMic.toFixed(2)+" m";
+      speedS = 2*posMic2/finalSp*1000000;
+      //alert(""+finalSp+" "+speedS);
+      if(!isNaN(speedS)){
+      speedSs = speedS.toFixed(0)+" m/s";}
+      else{speedSs = "<i> unknown...</i>";}
+
+
+      //document.getElementById("dummy2").innerHTML="distance<br>between microphones<br>="+distMics;
+      //document.getElementById("dummy1").innerHTML="position of<br>microphone 1<br>="+posMic1s;
+      document.getElementById("dummy4").innerHTML="speed<br>of sound<br>="+speedSs;
+      document.getElementById("dummy3").innerHTML="position of<br>microphone<br>="+posMic2s+"<br>from wall";
+
+}
+
+function plotNewArrow(){
+
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      ctx.clearRect(0, 0, canvW, canvH);
+
+      // Green rectangle
+      ctx.beginPath();
+      ctx.lineWidth = "4";
+      ctx.strokeStyle = "green";
+      ctx.rect(30, 30, canvW-60, canvH-60);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.lineWidth = "1";
+      ctx.arc(200, 30, 10, 0, 2 * Math.PI);//(x, y, r, start arc, end arc)
+      ctx.stroke();
+      ctx.fillStyle = "blue";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.lineWidth = "1";
+      ctx.arc(400, 30, 10, 0, 2 * Math.PI);//(x, y, r, start arc, end arc)
+      ctx.stroke();
+      ctx.fillStyle = "red";
+      ctx.fill();
+
+      for(i=0;i<noOfArr+1;i++){
+        //if(oldQchosen==i && oldQflag){}
+        //else{
+
+        //dot in centre
+              ctx.beginPath();
+              ctx.lineWidth = "1";
+              ctx.arc(arrXA[i], arrYA[i], 2, 0, 2 * Math.PI);//(x, y, r, start arc, end arc)
+              ctx.stroke();
+              ctx.fillStyle = "black";
+              ctx.fill();
+
+              //findFieldXY(arrXA[i], arrYA[i], i);
+              var arr2Length = arrNewLength[i];
+                  //arr2Length = arrLength;
+              var xHead = arrXA[i] + arr2Length*Math.cos(arrAngle[i]);
+              var yHead = arrYA[i] + arr2Length*Math.sin(arrAngle[i]);
+              var xTail = arrXA[i] - arr2Length*Math.cos(arrAngle[i]);
+              var yTail = arrYA[i] - arr2Length*Math.sin(arrAngle[i]);
+              //var xHead = arrXA[i] + arrLength*Math.sin(arrAngle[i]);
+              //var yHead = arrYA[i] + arrLength*Math.cos(arrAngle[i]);
+              //var xTail = arrXA[i] - arrLength*Math.cos(arrAngle[i]);
+              //var yTail = arrYA[i] - arrLength*Math.sin(arrAngle[i]);
+
+
+              ctx.beginPath();
+              ctx.lineWidth = "1";
+              ctx.moveTo(xTail, yTail);
+              ctx.lineTo(xHead, yHead);
+              ctx.stroke();
+
+        //    }
+
+    }
+
+      for(i=0;i<noOfQ+1;i++){
+        if(oldQchosen==i && oldQflag){}
+        else{
+              ctx.beginPath();
+              ctx.lineWidth = "1";
+              ctx.arc(QxA[i], QyA[i], 10, 0, 2 * Math.PI);//(x, y, r, start arc, end arc)
+              ctx.stroke();
+              ctx.fillStyle = QcolA[i];//Qcolor;//"green";
+              ctx.fill();
+            }
+
+    }
+   if(newQflag){
+    ctx.beginPath();
+    ctx.lineWidth = "1";
+    ctx.arc(Qx, Qy, 10, 0, 2 * Math.PI);//(x, y, r, start arc, end arc)
+    ctx.stroke();
+    ctx.fillStyle = QcolA[noOfQ];//"green";
+    ctx.fill();
+  }
+ if(oldQflag){
+  ctx.beginPath();
+  ctx.lineWidth = "1";
+  ctx.arc(Qx, Qy, 10, 0, 2 * Math.PI);//(x, y, r, start arc, end arc)
+  ctx.stroke();
+  ctx.fillStyle = QcolA[oldQchosen];//"green";
+  ctx.fill();
+}
+
+
+      ctx.closePath;
+
+            document.getElementById("dummy1").innerHTML=""+Qx + " "+Qy;
+}
+
+
+function changeDrag(){
+    if(moveruler){
+      moveruler=false;
+      moveRay=true;
+      document.getElementById("dragB").value="move ray";
+    }
+    else if(moveRay){
+      moveRay=false;
+      document.getElementById("dragB").value="LOCKED";
+    }
+    else{
+          moveruler=true;
+          document.getElementById("dragB").value="move ruler";
+        }
+
+}
+
+function changeText(){
+  if(textFlag){
+    textFlag=false;
+    document.getElementById("textB").value="text hidden";
+    plotNewMoveQ()
+  }
+  else{
+    textFlag=true;
+    document.getElementById("textB").value="text shown";
+    plotNewMoveQ()
+  }
+}
+
+function makeBang(){
+  clearTimeout(bangGo);
+  bangFlag = true;
+  bangRing = 0;
+  bangGo = setInterval(plotActualPict, 100);
+}
+
+function endBang(){
+  bangRing = 0;
+  bangFlag = false;
+  plotActualPict();
+}
+
+function resetSc(){
+  boxT = "000000";
+  plotActualPict();
+
+}
+
+var Events = function(canvasId){
+    this.canvas = document.getElementById(canvasId);
+    this.context = this.canvas.getContext("2d");
+    this.stage = undefined;
+    this.listening = false;
+    
+    // desktop flags
+    this.mousePos = null;
+    this.mouseDown = false;
+    this.mouseUp = false;
+    this.mouseOver = false;
+    this.mouseMove = false;
+    
+    // mobile flags
+    this.touchPos = null;
+    this.touchStart = false;
+    this.touchMove = false;
+    this.touchEnd = false;
+    
+    // Region Events
+    this.currentRegion = null;
+    this.regionIndex = 0;
+    this.lastRegionIndex = -1;
+    this.mouseOverRegionIndex = -1;
+};
+
+// ======================================= GENERAL =======================================
+
+Events.prototype.getContext = function(){
+    return this.context;
+};
+
+Events.prototype.getCanvas = function(){
+    return this.canvas;
+};
+
+Events.prototype.clear = function(){
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
+Events.prototype.getCanvasPos = function(){
+    var obj = this.getCanvas();
+    var top = 0;
+    var left = 0;
+    while (obj.tagName != "BODY") {
+        top += obj.offsetTop;
+        left += obj.offsetLeft;
+        obj = obj.offsetParent;
+    }
+    return {
+        top: top,
+        left: left
+    };
+};
+
+Events.prototype.setStage = function(func){
+    this.stage = func;
+    this.listen();
+};
+
+// ======================================= CANVAS EVENTS =======================================
+
+Events.prototype.reset = function(evt){
+    if (!evt) {
+        evt = window.event;
+    }
+    
+    this.setMousePosition(evt);
+    this.setTouchPosition(evt);
+    this.regionIndex = 0;
+    
+    if (this.stage !== undefined) {
+        this.stage();
+    }
+    
+    // desktop flags
+    this.mouseOver = false;
+    this.mouseMove = false;
+    this.mouseDown = false;
+    this.mouseUp = false;
+    
+    // mobile touch flags
+    this.touchStart = false;
+    this.touchMove = false;
+    this.touchEnd = false;
+};
+
+Events.prototype.listen = function(){
+    var that = this;
+    
+    if (this.stage !== undefined) {
+        this.stage();
+    }
+    
+    // desktop events
+    this.canvas.addEventListener("mousedown", function(evt){
+        that.mouseDown = true;
+        that.reset(evt);
+    }, false);
+    
+    this.canvas.addEventListener("mousemove", function(evt){
+        that.reset(evt);
+    }, false);
+    
+    this.canvas.addEventListener("mouseup", function(evt){
+        that.mouseUp = true;
+        that.reset(evt);
+    }, false);
+    
+    this.canvas.addEventListener("mouseover", function(evt){
+        that.reset(evt);
+    }, false);
+    
+    this.canvas.addEventListener("mouseout", function(evt){
+        that.mousePos = null;
+    }, false);
+    
+    // mobile events
+    this.canvas.addEventListener("touchstart", function(evt){
+        evt.preventDefault();
+        that.touchStart = true;
+        that.reset(evt);
+    }, false);
+    
+    this.canvas.addEventListener("touchmove", function(evt){
+        evt.preventDefault();
+        that.reset(evt);
+    }, false);
+    
+    this.canvas.addEventListener("touchend", function(evt){
+        evt.preventDefault();
+        that.touchEnd = true;
+        that.reset(evt);
+    }, false);
+};
+
+Events.prototype.getMousePos = function(evt){
+    return this.mousePos;
+};
+
+Events.prototype.getTouchPos = function(evt){
+    return this.touchPos;
+};
+
+Events.prototype.setMousePosition = function(evt){
+    var mouseX = evt.clientX - this.getCanvasPos().left + window.pageXOffset;
+    var mouseY = evt.clientY - this.getCanvasPos().top + window.pageYOffset;
+    this.mousePos = {
+        x: mouseX,
+        y: mouseY
+    };
+};
+
+Events.prototype.setTouchPosition = function(evt){
+    if (evt.touches !== undefined && evt.touches.length == 1) { // Only deal with one finger
+        var touch = evt.touches[0]; // Get the information for finger #1
+        var touchX = touch.pageX - this.getCanvasPos().left + window.pageXOffset;
+        var touchY = touch.pageY - this.getCanvasPos().top + window.pageYOffset;
+        
+        this.touchPos = {
+            x: touchX,
+            y: touchY
+        };
+    }
+};
+
+// ======================================= REGION EVENTS =======================================
+
+Events.prototype.beginRegion = function(){
+    this.currentRegion = {};
+    this.regionIndex++;
+};
+
+Events.prototype.addRegionEventListener = function(type, func){
+    var event = (type.indexOf('touch') == -1) ? 'on' + type : type;
+    this.currentRegion[event] = func;
+};
+
+Events.prototype.closeRegion = function(){
+    var pos = this.touchPos || this.mousePos;
+    
+    if (pos !== null && this.context.isPointInPath(pos.x, pos.y)) {
+        if (this.lastRegionIndex != this.regionIndex) {
+            this.lastRegionIndex = this.regionIndex;
+        }
+        
+        // handle onmousedown
+        if (this.mouseDown && this.currentRegion.onmousedown !== undefined) {
+            this.currentRegion.onmousedown();
+            this.mouseDown = false;
+        }
+        
+        // handle onmouseup
+        else if (this.mouseUp && this.currentRegion.onmouseup !== undefined) {
+            this.currentRegion.onmouseup();
+            this.mouseUp = false;
+        }
+        
+        // handle onmouseover
+        else if (!this.mouseOver && this.regionIndex != this.mouseOverRegionIndex && this.currentRegion.onmouseover !== undefined) {
+            this.currentRegion.onmouseover();
+            this.mouseOver = true;
+            this.mouseOverRegionIndex = this.regionIndex;
+        }
+        
+        // handle onmousemove
+        else if (!this.mouseMove && this.currentRegion.onmousemove !== undefined) {
+            this.currentRegion.onmousemove();
+            this.mouseMove = true;
+        }
+        
+        // handle touchstart
+        if (this.touchStart && this.currentRegion.touchstart !== undefined) {
+            this.currentRegion.touchstart();
+            this.touchStart = false;
+        }
+        
+        // handle touchend
+        if (this.touchEnd && this.currentRegion.touchend !== undefined) {
+            this.currentRegion.touchend();
+            this.touchEnd = false;
+        }
+        
+        // handle touchmove
+        if (!this.touchMove && this.currentRegion.touchmove !== undefined) {
+            this.currentRegion.touchmove();
+            this.touchMove = true;
+        }
+        
+    }
+    else if (this.regionIndex == this.lastRegionIndex) {
+        this.lastRegionIndex = -1;
+        this.mouseOverRegionIndex = -1;
+        
+        // handle mouseout condition
+        if (this.currentRegion.onmouseout !== undefined) {
+            this.currentRegion.onmouseout();
+        }
+    }
+};
+
+
+
+
+</script>
+
+  </head>
+  <body style="margin-left: 80px;">
+    <br>
+
+    <p></p>
+
+<table border="0">
+  <tr>
+  <td>&nbsp;</td>
+  <td rowspan="5" class="fig"><canvas id="myCanvas" width="600" height="630" style="margin-left: 0px;" style="border:0px solid #ffffff;">
+    </canvas></td>
+      <td>&nbsp;</td>
+</tr>
+<tr>
+  <td> <span id="dummy1"></span> </td>
+
+  <td><input class="button" id="dragB" type="button" value="BANG!" onClick="makeBang();"></td>
+</tr>
+<tr>
+    <td><span id="dummy3"></span></td>
+
+  <td>&nbsp;</td>
+  </tr>
+<tr>
+  <td> <span id="dummy2"></span> </td>
+  <td><span id="dummy4"></span></td>
+    </tr>
+<tr>
+<td><input class="button" id="textB" type="button" value="reset" onClick="resetSc();"></td>
+
+  <td>  <input type="button" id="saveButton" value="Save image"></p></td>
+</tr>
+</table>
+
+
+    </body>
+</html>
