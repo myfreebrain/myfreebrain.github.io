@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <style>
+          canvas {
+              border: 1px solid black;
+              font-family: "Helvetica Neue", "Arial", "Lucida Grande", "Lucida Sans Unicode", "Microsoft YaHei", sans-serif;
+              font-size: 13px;
+              line-height: 1.5;
+              color: #474747;
+          }
+          td {width: 30%; text-align: left;}
+          td.fig {width: 40%;}
+          textarea {width: 4em; height: 1em; resize: none;}
+      </style>
+      <script src="events.js">
+      </script>
+
+    <script src="elecFieldDraw_v4.2.js" type="text/javascript"></script>
+
+  </head>
+  <body style="margin-left: 80px;">
+    <br>
+    <p><input class="button" id="dragB" type="button" value="drag enabled" onClick="changeDrag();">
+    <span id="dummy2"><i></span></p>
+
+      <br>
+  <input type="button" id="saveButton" value="Save image">
+
+    <canvas id="myCanvas" width="600" height="630" style="margin-left: 0px;" style="border:1px solid #000000;">
+    </canvas>
+
+    <b><p id="dummy1"><i></i></p></b>
+    <p> <span id="questions1"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span  style="color:green;" id="answer1">&nbsp;</span></p>
+
+  </body>
+</html>
