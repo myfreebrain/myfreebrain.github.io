@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <style>
+          canvas {
+              border: 0px solid black;
+              font-family: "Helvetica Neue", "Arial", "Lucida Grande", "Lucida Sans Unicode", "Microsoft YaHei", sans-serif;
+              font-size: 13px;
+              line-height: 1.5;
+              color: #474747;
+          }
+          td {text-align: center;}
+          td.fig {width: 710px;text-align: right;}
+          textarea {width: 4em; height: 1em; resize: none;}
+      </style>
+      <script src="events.js">
+      </script>
+
+    <script src="lightRefl_v3TimeLineSlow.js" type="text/javascript"></script>
+
+  </head>
+  <body style="margin-left: 80px;">
+    <br>
+
+    <p></p>
+
+<table border="0"><tr>
+  <td><input class="button" id="dragB" type="button" value="move A or B or M" onClick="changeDrag();"></td>
+  <td rowspan="4" class="fig"><canvas id="myCanvas" width="1000" height="1000" style="margin-left: 0px;" style="border:1px solid #ffffff;">
+    </canvas></td>
+    <td>&nbsp;&nbsp;</td>
+      <td>&nbsp;&nbsp;</td>
+
+
+</tr><tr>
+      <td>Measure angles<br><input class="button" id="findAB" type="button" value="click here" onClick="findAngles();"></td>
+      <td>&nbsp;&nbsp;</td>
+        <td> <span id="dummy2"><i></span> </td>
+  </tr>
+  <tr>
+        <td><span id="dummy1"><i></span></td>
+        <td>&nbsp;&nbsp;</td>
+          <td> <span id="dummy3"><i></span> </td>
+    </tr>
+    <tr>
+    <td>  <input type="button" id="saveButton" value="Save image"></p></td>
+    <td>&nbsp;&nbsp;</td>
+    <td><span id="dummy4"></span></td>
+    </tr>
+</table>
+
+
+    </body>
+</html>
