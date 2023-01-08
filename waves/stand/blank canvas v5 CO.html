@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<head>
+<title>Blank Canvas</title>
+
+<!--<link rel="stylesheet" href="style.css" type="text/css">-->
+<style>
+          canvas {
+              border: 1px solid black;
+              font-family: "Helvetica Neue", "Arial", "Lucida Grande", "Lucida Sans Unicode", "Microsoft YaHei", sans-serif;
+              font-size: 13px;
+              line-height: 1.5;
+              color: #474747;
+          }
+          td {text-align: center;}
+          td.fig {width: 710px;text-align: right;}
+          textarea {width: 4em; height: 1em; resize: none;}
+          .left {text-align: left;}
+
+          .slidecontainer {
+              width: 100%; /* Width of the outside container */
+            }
+
+            /* The slider itself */
+            .slider {
+              width: 80%; /* Full-width */
+              height: 50px; /* Specified height */
+              background: #ff0000; /* Grey background #d3d3d3*/
+            }
+
+          </style>
+      <script src="events.js">
+      </script>
+<script type="text/javascript"
+	charset="utf-8"
+	src="blank canvas v5 CO.js">
+</script>
+</head>
+
+
+<body style="margin-left: 80px;">
+    <br>
+
+    <p></p>
+
+<table border="1">
+  <tr><td colspan="2">
+    <p class="left">FREQUENCY (Hz):</p>
+    <p id="dial1">xx</p>
+    <div class="slidecontainer">
+<input type="range" min="50" max="1050"  step="1" value="500" class="slider" id="myRange1" oninput="changeN1()">
+</div></td>
+<td colspan="2">
+  <p class="left">multiplier:</p><p id="dial2">xx</p>
+  <div class="slidecontainer">
+<input type="range" min="1" max="6" step="1" value="3" class="slider" id="myRange2" oninput="changeN2()">
+</div></td>
+</tr>
+<tr>
+  <td><input class="button" id="dragB" type="button" value="length = 200cm" onClick="changeDrag();"></td>
+  <td rowspan="4" class="fig"><canvas id="my_Canvas" width="600" height="630" style="position:static;" style="margin-left: -60px;" style="border:1px solid #ffffff;">
+    </canvas></td>
+    <td>&nbsp;&nbsp;</td>
+      <td><span id="dummy3"></span></td>
+</tr>
+  <tr>
+  <td><span id="dummy4">typed over by frequency
+</span></td></td>
+  <td>&nbsp;&nbsp;</td>
+  <td><span id="dummy1">
+    <div>
+  <input type="radio" id="single" name="lines" value="single" onclick="changeLine(this)">
+  <label for="single">single</label>
+</div>
+<br>
+<div>
+  <input type="radio" id="double" name="lines" value="double"  onclick="changeLine(this)" checked>
+  <label for="double">double</label>
+</div></span></td>
+</tr>
+<tr>
+      <td id="dummy5">xx</p>
+      xx</td>
+      <td>&nbsp;&nbsp;</td>
+        <td> <span id="dummy2"><i></span> </td>
+  </tr>
+  <tr>
+    <td>  <input type="button" id="saveButton" value="Save image">
+      </td>
+    <td>&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;</td>
+    </tr>
+    <!--HIDDEN STUFF
+<input class="button" id="textB" type="button" value="text shown" onClick="changeText();">
+<span id="dummy3"></span>
+
+    -->
+</table>
+</body>
+</html>
