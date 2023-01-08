@@ -1,0 +1,7 @@
+moments1 - moments n3b 100cm
+
+moments2 - moments n3b 3V cofmV
+
+moments3 - moments n3b 3V hiddenCentreV
+
+vector - move vector n5 bu
