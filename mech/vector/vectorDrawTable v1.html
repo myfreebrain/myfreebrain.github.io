@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <style>
+          canvas {
+              border: 1px solid black;
+              font-family: "Helvetica Neue", "Arial", "Lucida Grande", "Lucida Sans Unicode", "Microsoft YaHei", sans-serif;
+              font-size: 13px;
+              line-height: 1.5;
+              color: #474747;
+          }
+          td {width: 20%; text-align: left;}
+          td.fig {width: 40%;}
+          textarea {width: 4em; height: 1em; resize: none;}
+      </style>
+      <script src="events.js">
+      </script>
+
+    <script src="vectorDraw_v3.js" type="text/javascript"></script>
+        <script src="mouseDraw_v3.js"></script>
+
+  </head>
+  <body style="margin-left: 80px;">
+<table>
+  <tr>
+    <td>
+    <b>
+      <p><i>(angles are measured to the vertical, rotating clockwise)</i></p></b>
+    <p> <span id="questions1"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span  style="color:green;" id="answer1">&nbsp;</span></p>
+    <br>
+
+    <input class="button" id="vect2" type="button" value="new vectors" onClick="findVector();">
+    <br><br>
+    <input class="button" id="vect1" type="button" value="lock vectors" onClick="chooseVector();">
+    <br><br>
+
+    <input class="button" id="vect3" type="button" value="show Resultant" onClick="resultantV();">
+    <br><br>
+    <input class="button" id="vect4" type="button" value="top to tail" onClick="topTail();">
+<!--
+    <br><br>
+    <input class="button" id="vectP" type="button" value="permutations" onClick="shufflePerm();">
+  -->
+      <br><br>
+  <input type="button" id="saveButton" value="Save image">
+</td><td class="fig">
+    <!--<p id="box">&nbsp;</p>-->
+    <canvas id="myCanvas" width="440" height="440" style="margin-left: 0px;">
+    </canvas>
+  </td>
+  <td>
+    <p><textarea id="boxNumbOfV" style="width: 2em;">2</textarea> <input type="button" id="stepsButton" value="change number of vectors"  onClick="changeNumb()"></p>
+      <p>1 px = <textarea id="boxScale" style="width: 3em;">0.5</textarea>N <input type="button" id="scaleButton" value="change scale"  onClick="changeScale()"></p>
+    <p><span id="components"></span></p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" id="inputButton" value="Input components"  onClick="change2()";>
+    <br><br>
+      <p><span  style="color:green;" id="Rcomps"></span></p>
+  </td>
+</tr>
+<!--
+<tr>
+  <td>
+    <p>
+    <input class="button" id="vect1" type="button" value="move vector" onClick="chooseVector();">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input class="button" id="vect2" type="button" value="new vectors" onClick="findVector();">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input class="button" id="vect3" type="button" value="show Resultant" onClick="resultantV();">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input class="button" id="vect4" type="button" value="top to tail" onClick="topTail();">
+  </td>
+</tr>
+-->
+</table>
+
+  </body>
+</html>
