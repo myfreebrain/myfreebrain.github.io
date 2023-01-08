@@ -1,0 +1,68 @@
+
+			body {
+				padding: 20px;
+				font-family: Cursive;
+
+        	background-color: rgb(200,200,200);
+  				color: white;
+  				padding: 20px;
+  			}
+			/* color name */
+			h1 {
+				font-family: "Lucida Calligraphy";
+				color: Yellow;
+  				background-color: Blue;
+  				padding: inherit;
+      }
+			h1.red {
+  				background-color: Red;}
+			h1.green {
+		  		background-color: Green;}
+			h1.purple {
+		  		background-color: Purple;}
+			h1.black {
+		  		background-color: Black;}
+			h1.brown {
+		  		background-color: Brown;}
+			h1.cyan {
+		  		background-color: Cyan;}
+			h1.magenta {
+		  		background-color: Magenta;}
+			h1.orange {
+		  		background-color: Orange;
+					color: Blue;}
+			/* hex code */
+			h2 {
+				font-family: "Lucida Calligraphy";
+				color: Blue;
+  				background-color: Yellow;
+  				padding: inherit;
+        }
+			/* rgb value */
+			p {	background-color: hsla(0,100%,100%,0.5);
+    				color: #64645A;
+    				padding: inherit;
+  				padding: inherit;
+    				width: 80%;
+    				height: 25px;
+    				position: relative;
+    				top: 20px;
+    				left: 20px;
+    				margin: 20px;
+      }
+
+        p.one {background-color: hsla(0,100%,100%,0.5);
+      				color: #000000;
+          opacity: 1;}
+        p.two {background-color: hsla(0,100%,100%,0.5);
+      				color: #000000;}
+
+			div {
+				width: 100px;
+				height: 100px;
+				margin: 40px;
+				display: inline-block;
+				background-color: #ee3e80;}
+
+			.credits {
+				font-family: "Courier New", Courier, monospace;}
