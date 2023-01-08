@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <style>
+          canvas {
+              border: 0px solid black;
+              font-family: "Helvetica Neue", "Arial", "Lucida Grande", "Lucida Sans Unicode", "Microsoft YaHei", sans-serif;
+              font-size: 13px;
+              line-height: 1.5;
+              color: #474747;
+          }
+          td {text-align: center;}
+          td.fig {width: 710px;text-align: right;}
+          textarea {width: 4em; height: 1em; resize: none;}
+
+          .slidecontainer {
+              width: 100%; /* Width of the outside container */
+            }
+
+            /* The slider itself */
+            .slider {
+              width: 50%; /* Full-width */
+              height: 25px; /* Specified height */
+              background: #d3d3d3; /* Grey background */
+            }
+
+          </style>
+      <script src="events.js">
+      </script>
+
+    <script src="lightRefr_v5.js" type="text/javascript"></script>
+
+  </head>
+  <body style="margin-left: 80px;">
+    <br>
+
+    <p></p>
+
+<table border="0">
+  <tr>
+  <td><input class="button" id="dragB" type="button" value="move ray" onClick="changeDrag();"></td>
+  <td rowspan="4" class="fig"><canvas id="myCanvas" width="600" height="630" style="margin-left: -60px;" style="border:1px solid #ffffff;">
+    </canvas></td>
+    <td>&nbsp;&nbsp;</td>
+      <td><span id="dummy3"></span></td>
+</tr>
+  <tr>
+  <td><p id="med1">medium 1 n=1</p>
+    <div class="slidecontainer">
+<input type="range" min="100" max="300" value="100" class="slider" id="myRange1" oninput="changeN1()">
+</div></td></td>
+  <td>&nbsp;&nbsp;</td>
+  <td><span id="dummy1"><i></span></td>
+</tr>
+<tr>
+      <td><p id="med2">medium 2 n=1</p>
+        <div class="slidecontainer">
+  <input type="range" min="100" max="300" value="150" class="slider" id="myRange2" oninput="changeN2()">
+</div></td>
+      <td>&nbsp;&nbsp;</td>
+        <td> <span id="dummy2"><i></span> </td>
+  </tr>
+  <tr>
+    <td>  <input type="button" id="saveButton" value="Save image">
+      </td>
+    <td>&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;</td>
+    </tr>
+    <!--HIDDEN STUFF
+<input class="button" id="textB" type="button" value="text shown" onClick="changeText();">
+<span id="dummy3"></span>
+
+    -->
+</table>
+
+
+    </body>
+</html>
