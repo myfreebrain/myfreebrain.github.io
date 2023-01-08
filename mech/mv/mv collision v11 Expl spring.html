@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Explosions!</title>
+      <style>
+          canvas {
+              border: 0px solid black;
+              font-family: "Helvetica Neue", "Arial", "Lucida Grande", "Lucida Sans Unicode", "Microsoft YaHei", sans-serif;
+              font-size: 13px;
+              line-height: 1.5;
+              color: #474747;
+              margin-left: 10;
+          }
+          td {text-align: center;}
+          td.fig {width: 710px;text-align: right;}
+          textarea {width: 4em; height: 1em; resize: none;}
+          .center {margin: auto; width: 80%;}
+          .slidecontainer {
+            width: 100%; /* Width of the outside container */
+          }
+          .toLeft {text-align: left;}
+          input.button {width: 80%;}
+          /* The slider itself */
+          .slider {
+            width: 80%; /* Full-width */
+              height: 50px; /* Specified height */
+            background: #ff0000; /* Grey background #d3d3d3*/
+          }
+          table.bigTable1 {width: 100%; margin-left: 0; background:Sienna;}
+          table.bigTable {width: 100%; margin-left: 0}
+          td {text-align: center;}
+          td.fig {width: 50%;text-align: right; background:PeachPuff;}
+          td.main {width: 25%;}
+          td.main1 {width: 25%; background:PaleGreen;}
+          td.main2 {width: 25%; background:Plum;}
+          td.main3 {width: 25%; background:Green;}
+          td.main4 {width: 25%; background:Red;}
+          td.main5 {width: 25%; background:Blue;}
+          body {margin-left: 80px;background:Wheat;}
+
+      </style>
+      <script src="events.js">
+      </script>
+
+    <script src="mv collision v11 Expl spring.js" type="text/javascript"></script>
+
+  </head>
+  <body>
+    <br>
+
+    <p></p>
+
+    <table class="bigTable1" border="1">
+      <tr>
+      <td class="main2"><input class="center" id="stopB" type="button" value="restart" onClick="zeroDriver();"></td>
+      <td class="main3"><input class="center" id="goB" type="button" value="GO" onClick="shakeDriver();"></td>
+      <td class="main4"><input class="center" id="stopB" type="button" value="STOP" onClick="stopDriver();"></td>
+      <td class="main1"><input type="button" id="saveButton" value="Save image"></td>
+      </tr>
+<tr>
+          <td class="main1"><span id="dummy4"></span>
+            </td>
+            <td   class="fig" rowspan="2" colspan="2"><canvas id="myCanvas" width="600" height="630" style="margin-left: -60px;" style="border:1px solid #ffffff;">
+              </canvas></td>
+            <td class="main2"> <span id="dummy2"></span> </td>
+      </tr><tr>
+        <td class="main2">
+          <span id="dummyE">E = 10 J</span><div class="slidecontainer">
+          <input type="range" min="0" max="60" step="1" value="20" class="slider" id="myRangeE" oninput="changeE()">
+          </div><br><span id="dummyAS">&lt;-accuracy/speed-&gt;</span><div class="slidecontainer">
+          <input type="range" min="1" max="100" step="1" value="50" class="slider" id="myRangeAS" oninput="changeAS()">
+          </div></td>
+
+        <td class="main1"><span id="dummy3"></span></td>
+        </tr>
+        <tr>
+              <td class="main1">    </td>
+        <td class="main5"><span id="dummyMA">m<sub>A</sub> = 100</span>
+  <table class="bigTable"><tr><td><input class="button" id="zero1" type="button" value="1" onClick="changeMA(0);"></td>
+    <td><input class="button" id="add1" type="button" value="+1" onClick="changeMA(1);"></td>
+            <td><input class="button" id="mult10" type="button" value="x10" onClick="changeMA(10);"></td></tr>
+      <tr><td><input class="button" id="zero100" type="button" value="100" onClick="changeMA(100);"></td>
+        <td><input class="button" id="sub1" type="button" value="-1" onClick="changeMA(-1);"></td>
+          <td><input class="button" id="div10" type="button" value="x0.1" onClick="changeMA(0.1);"></td></tr>
+        </table>
+        <span id="dummyMA2"></span>
+  </td>
+        <td class="main4"><span id="dummyMB">m<sub>B</sub> = 10</span>
+<table class="bigTable"><tr><td><input class="button" id="zero1" type="button" value="1" onClick="changeMB(0);"></td>
+<td><input class="button" id="add1" type="button" value="+1" onClick="changeMB(1);"></td>
+        <td><input class="button" id="mult10" type="button" value="x10" onClick="changeMB(10);"></td></tr>
+  <tr><td><input class="button" id="zero100" type="button" value="100" onClick="changeMB(100);"></td>
+    <td><input class="button" id="sub1" type="button" value="-1" onClick="changeMB(-1);"></td>
+      <td><input class="button" id="div10" type="button" value="x0.1" onClick="changeMB(0.1);"></td></tr>
+    </table>
+    <span id="dummyMB2"></span>
+</td>
+<td class="main2"></td></tr>
+    </table>
+
+
+
+    </body>
+</html>
